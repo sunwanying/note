@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">笔记博客</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <!--<ul class="nav navbar-nav">
+                <li>
+                    <a href="#" th:href="@{/servertest/index}">后端测试</a>
+                </li>
+                <li><a href="#" th:href="@{/device/index}">设备管理</a></li>
+                <li>
+                    <a href="#" th:href="@{/sqltools/index}">SQL小工具</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        配置管理 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" th:href="@{/api/index}">接口管理</a></li>
+                        <li><a href="#" th:href="@{/project/index}">项目管理</a></li>
+                        <li><a href="#" th:href="@{/bug/index}">BUG管理</a></li>
+                        <li><a href="#" th:href="@{/brand/index}">品牌管理</a></li>
+                        <li><a href="#" th:href="@{/department/index}">部门管理</a></li>
+                        <li>
+                            <a href="#" th:href="@{/mock/index}">Mock Server</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/apitest/index}">接口测试</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/perf/index}">云压测</a>
+                        </li>
+                        &lt;!&ndash;<li class="divider"></li>&ndash;&gt;
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        瑞士军刀 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/eventtracking/index">页面统计检测</a></li>
+                        &lt;!&ndash;<li class="divider"></li>&ndash;&gt;
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        公共平台 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="http://gitlab.dev.daikuan.com/">GitLab</a>
+                        </li>
+                        <li>
+                            <a href="http://jenkins.dev.daikuan.com/">Jenkins</a>
+                        </li>
+                        <li>
+                            <a href="http://wiki.dev.daikuan.com/">Wiki</a>
+                        </li>
+                        <li>
+                            <a href="http://140.143.185.20:8080/">线上巡检系统</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        订餐 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{/order/index}">研发部</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/order/indexOther}">其他部门</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" th:href="@{/weblog/index}">关于我们</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li th:if="${#httpServletRequest.remoteUser}">
+                    <a href="#" class="btn">
+                        <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.departmentName}"></span>
+                    </a>
+                </li>
+            </ul>-->
+            <!--登录按钮-->
+            <ul class="nav navbar-nav navbar-right">
+                <li id="login">
+                    <a class="btn btn-warning" th:href="@{/toLoginPage}">登录</a>
+                </li>
+                <li class="dropdown" id="userDomain" style="display: none">
+                    <a href="#" class="btn btn-success" data-toggle="dropdown">
+                        <span id="username" style="color: white;">用户名</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a href="/user/index">用户管理</a>
+                        </li>
+                        <li>
+                            <a href="/user/personIndex">密码修改</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="$('#form').submit();">退出</a>
+                            <form style="visibility: hidden" id="form" method="post" th:action="@{/logout}"></form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
