@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sunguolei.note.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="cn.sunguolei.note.domain.User">
+        <id property="id" column="id"/>
+        <id property="username" column="username"/>
+        <id property="password" column="password"/>
+    </resultMap>
+    <select id="findUserByUsername" resultMap="UserMap">
+        SELECT *
+        FROM t_user
+        WHERE username = #{username}
+    </select>
+
+</mapper>

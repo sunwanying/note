@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sunguolei.note.mapper.NoteMapper">
+
+    <resultMap id="NoteMap" type="cn.sunguolei.note.domain.Note">
+        <id property="id" column="id"/>
+        <id property="title" column="title"/>
+        <id property="content" column="content"/>
+        <id property="createTime" column="create_time"/>
+        <id property="clickNumber" column="click_number"/>
+        <id property="userId" column="user_id"/>
+        <id property="type" column="type"/>
+    </resultMap>
+    <select id="index" resultMap="NoteMap" parameterType="int">
+        SELECT *
+        FROM t_note
+        WHERE user_id = #{id}
+    </select>
+
+    <insert id="create" parameterType="cn.sunguolei.note.domain.Note">
+        INSERT INTO t_note (title, content, create_time, click_number, user_id, type)
+        VALUES (#{title}, #{content}, #{createTime}, #{clickNumber}, #{userId}, #{type})
+    </insert>
+
+</mapper>
