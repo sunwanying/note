@@ -1,5 +1,6 @@
 package cn.sunguolei.note.security;
 
+import cn.sunguolei.note.utils.UserUtil;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,34 +22,49 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req,
-                                    HttpServletResponse res,
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(HEADER_STRING);
+        // 通过 Authorization 头判断请求头中是否带有 token
+//        String headerToken = request.getHeader(HEADER_STRING);
 
-        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
-            chain.doFilter(req, res);
+        // 如果 header 和 cookie 中的 token 都不存在的话，就走其他的过滤器，让用户登录
+//        if ( headerToken == null || !headerToken.startsWith(TOKEN_PREFIX)) {
+        String token = UserUtil.getTokenFromCookie(request);
+
+        if (token == null) {
+            chain.doFilter(request, response);
             return;
         }
+//        }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
+        chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
+
+        // 先通过 Authorization header 方式获取 token
+//        String token = request.getHeader(HEADER_STRING);
+
+        // 如果通过 header 拿不到 token，就通过 cookie 拿 token
+//        if (token == null) {
+           String token = UserUtil.getTokenFromCookie(request);
+//        }
+
         if (token != null) {
             // parse the token.
-            String user = Jwts.parser()
+            String username = Jwts.parser()
                     .setSigningKey(SECRET.getBytes())
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+//                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                    .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            if (username != null) {
+                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
             }
             return null;
         }

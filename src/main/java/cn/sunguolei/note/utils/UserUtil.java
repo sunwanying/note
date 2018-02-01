@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,13 @@ public class UserUtil {
 
         Map<String, String> userInfoMap = new HashMap<>();
 
+        // 先通过 Authorization header 方式获取 token
         String token = request.getHeader(HEADER_STRING);
+
+        // 如果通过 header 拿不到 token，就通过 cookie 拿 token
+        if (token == null) {
+            token = UserUtil.getTokenFromCookie(request);
+        }
 
         if (token != null) {
             // parse the token.
@@ -55,18 +62,35 @@ public class UserUtil {
      * @param request http 请求
      * @return 返回 token 或者 null
      */
-    public static String getToken(HttpServletRequest request) {
+    public static String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String token = null;
 
-        // 遍历所有的 cookie，查找 key 为 token 的 cookie
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
-                token = TOKEN_PREFIX + cookie.getValue();
-                break;
+        if (cookies != null) {
+            // 遍历所有的 cookie，查找 key 为 token 的 cookie
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
+            return token;
         }
+        return null;
+    }
 
-        return token;
+    /**
+     * 往 response 中的 cookie 写入 token
+     * @param response 返回的响应
+     */
+    public static HttpServletResponse setTokenToCookie(HttpServletResponse response, String token) {
+
+        // token 存放到 cookie 中，并设置到期时间为 30 天
+        Cookie tokenCookie = new Cookie("token", token);
+        tokenCookie.setMaxAge(30 * 24 * 60 * 60);
+        tokenCookie.setPath("/");
+        response.addCookie(tokenCookie);
+
+        return response;
     }
 }

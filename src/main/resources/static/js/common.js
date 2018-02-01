@@ -1,6 +1,7 @@
 // 所有页面加载时，先执行获取用户信息的操作，填写头部的用户信息
 $(function () {
     $.ajax({
+        Accept: "application/json",
         type: "GET",
         url: "/getUserIdentity",
         success: function (response) {

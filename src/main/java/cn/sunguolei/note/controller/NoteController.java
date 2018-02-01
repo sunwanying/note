@@ -43,7 +43,7 @@ public class NoteController {
     public String index(HttpServletRequest request, Model model) {
 
         // 获取请求 cookie 中的 token
-        String token = UserUtil.getToken(request);
+        String token = UserUtil.getTokenFromCookie(request);
 
         if (null != token) {
             // 获取用户登录信息和用户信息
@@ -81,7 +81,7 @@ public class NoteController {
     public String create(HttpServletRequest request, Note note) {
 
         // 获取请求 cookie 中的 token
-        String token = UserUtil.getToken(request);
+        String token = UserUtil.getTokenFromCookie(request);
 
         if (null != token) {
             // 获取用户登录信息和用户信息

@@ -1,5 +1,7 @@
-package cn.sunguolei.note.security;
+package cn.sunguolei.note.config;
 
+import cn.sunguolei.note.security.JWTAuthenticationFilter;
+import cn.sunguolei.note.security.JWTAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
