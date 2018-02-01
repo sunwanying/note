@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static cn.sunguolei.note.security.SecurityConstants.*;
+import static cn.sunguolei.note.security.SecurityConstants.SECRET;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
@@ -51,7 +51,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         // 如果通过 header 拿不到 token，就通过 cookie 拿 token
 //        if (token == null) {
-           String token = UserUtil.getTokenFromCookie(request);
+        String token = UserUtil.getTokenFromCookie(request);
 //        }
 
         if (token != null) {

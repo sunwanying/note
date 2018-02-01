@@ -1,5 +1,9 @@
 package cn.sunguolei.note.domain;
 
+/**
+ * 用户是否登录相关的信息
+ * 所有的  restful 返回的 用户登录的 json 数据封装到一起
+ */
 public class TokenInfo {
     private String username;
     private Boolean isLogin;
