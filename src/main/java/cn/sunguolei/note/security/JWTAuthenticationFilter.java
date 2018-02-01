@@ -1,6 +1,9 @@
 package cn.sunguolei.note.security;
 
+import cn.sunguolei.note.domain.TokenInfo;
 import cn.sunguolei.note.domain.User;
+import cn.sunguolei.note.utils.UserUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,14 +14,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static cn.sunguolei.note.security.SecurityConstants.*;
+import static cn.sunguolei.note.security.SecurityConstants.EXPIRATION_TIME;
+import static cn.sunguolei.note.security.SecurityConstants.SECRET;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
@@ -46,22 +49,36 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse response,
+                                            FilterChain chain, Authentication auth) throws JsonProcessingException {
+
+        String username = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
-                .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+                .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+
+//        response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+
+        // 写 token 到 response 的 cookie 里
+        response = UserUtil.setTokenToCookie(response, token);
+
+        // 设置返回结果
+        TokenInfo tokenInfo = new TokenInfo();
+        tokenInfo.setLogin(false);
+        tokenInfo.setResultCode(200);
+        tokenInfo.setUsername(username);
+
+        String resultString = new ObjectMapper().writeValueAsString(tokenInfo);
+
         // 将 JWT 写入 body
         try {
-            res.setContentType("application/json");
-            res.setStatus(HttpServletResponse.SC_OK);
-            res.getOutputStream().println("{\"username\":\"guolei\"}");
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(resultString);
         } catch (IOException e) {
             e.printStackTrace();
         }
