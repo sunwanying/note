@@ -1,7 +1,8 @@
-package cn.sunguolei.note.security;
+package cn.sunguolei.note.config;
 
+import cn.sunguolei.note.security.JWTAuthenticationFilter;
+import cn.sunguolei.note.security.JWTAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import static cn.sunguolei.note.security.SecurityConstants.SIGN_UP_URL;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/toLogin", "/login",
                         // 静态资源过滤
                         "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
-//                .antMatchers(HttpMethod.POST,SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 非 login 请求，先走 JWT token 过滤器，校验 token 的有效性
