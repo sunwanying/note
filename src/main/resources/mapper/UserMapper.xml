@@ -8,11 +8,20 @@
         <id property="id" column="id"/>
         <id property="username" column="username"/>
         <id property="password" column="password"/>
+        <id property="createTime" column="create_time"/>
+        <id property="email" column="email"/>
     </resultMap>
     <select id="findUserByUsername" resultMap="UserMap">
         SELECT *
         FROM t_user
         WHERE username = #{username}
     </select>
-
+    <select id="index" resultMap="UserMap">
+        SELECT *
+        FROM t_user
+    </select>
+    <insert id="create" parameterType="cn.sunguolei.note.domain.User">
+            INSERT INTO t_user (username,password, create_time,email)
+            VALUES (#{username}, #{password}, #{createTime}, #{email})
+    </insert>
 </mapper>
