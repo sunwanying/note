@@ -62,12 +62,13 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String toRegister(User user) {
+    public String create(User user,Model model) {
         LocalDateTime createTime = LocalDateTime.now();
         user.setCreateTime(createTime);
         String password = new BCryptPasswordEncoder(11).encode(user.getPassword());
         user.setPassword(password);
         userService.create(user);
+        model.addAttribute("msg", "注册成功");
         return "login";
     }
 }

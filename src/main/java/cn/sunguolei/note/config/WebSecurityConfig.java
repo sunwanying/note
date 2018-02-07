@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 // 除了 login 其它接口都需要验证
-                .antMatchers("/", "/toLogin", "/login", "/user/register",
+                .antMatchers("/", "/toLogin", "/login", "/user/add",
                         // 静态资源过滤
                         "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
