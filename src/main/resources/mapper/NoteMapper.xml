@@ -24,4 +24,10 @@
         VALUES (#{title}, #{content}, #{createTime}, #{clickNumber}, #{userId}, #{type})
     </insert>
 
+    <select id="findNoteById" resultType="cn.sunguolei.note.domain.Note" parameterType="int">
+        SELECT *
+        FROM t_note
+        WHERE id = #{id}
+    </select>
+
 </mapper>

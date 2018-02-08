@@ -25,8 +25,9 @@ public class UserServiceImpl implements UserService {
     public List<User> index() {
         return userMapper.index();
     }
+
     @Override
-    public int create(User user){
+    public int create(User user) {
         return userMapper.create(user);
     }
 }
