@@ -1,9 +1,14 @@
-// 所有页面加载时，先执行获取用户信息的操作，填写头部的用户信息
 $(function () {
 
+    // 笔记 markdown 预览
     $("#previewButton").click(function () {
         var content = $("#content").val();
-        var html_content = markdown.toHTML(content);
-        $("#preview").html(html_content);
+        var markdown_content = gfmMarkdown(content);
+
+        if (markdown_content === "error") {
+            markdown_content = markdown.toHTML(content);
+        }
+
+        $("#preview").html(markdown_content);
     })
 });

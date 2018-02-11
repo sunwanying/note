@@ -22,6 +22,7 @@ $(function () {
         }
     });
 
+    // 用户登录
     $("#userLogin").click(function () {
         var username = $("#userLoginName").val();
         var password = $("#password").val();
@@ -34,7 +35,6 @@ $(function () {
                 "username": username,
                 "password": password
             }),
-            // dataType: "json",
             success: function (response) {
                 if (response) {
                     // 获取用户
@@ -63,3 +63,31 @@ $(function () {
         });
     })
 });
+
+// 调用 github markdown 进行文章的渲染 gfm
+function gfmMarkdown(content) {
+    var result = 1;
+
+    $.ajax({
+        type: "POST",
+        dataType: "html",
+        processData: false,
+        async: false,
+        url: "https://api.github.com/markdown",
+        data: JSON.stringify({
+            "text": content,
+            "mode": "gfm"
+        }),
+        success: function (data) {
+            console.log("success!");
+            result = data;
+        },
+        error: function (jqXHR, textStatus, error) {
+            console.log(jqXHR, textStatus, error);
+            console.log("gfm markdown 渲染失败！");
+            result = "error";
+        }
+    });
+
+    return result;
+}
