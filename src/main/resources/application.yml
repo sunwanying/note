@@ -17,7 +17,3 @@ mybatis:
   type-aliases-package: cn.sunguolei.note.domain
   configuration:
     map-underscore-to-camel-case: true
-
-logging:
-  level:
-    cn.sunguolei.note: debug
