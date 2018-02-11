@@ -8,6 +8,7 @@ public class User {
     private String password;
     private LocalDateTime createTime;
     private String email;
+
     public int getId() {
         return id;
     }

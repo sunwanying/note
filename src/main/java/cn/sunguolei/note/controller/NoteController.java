@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -99,6 +100,20 @@ public class NoteController {
 
         // 返回笔记列表页
         return "redirect:/note/index";
+    }
+
+    /**
+     * 根据ID打开笔记页面
+     *
+     * @return 返回对应页面
+     */
+    @GetMapping("/view/{id}")
+    public String view(@PathVariable("id") int id, Model model) {
+        Note note = noteService.findNoteById(id);
+
+        model.addAttribute("note", note);
+
+        return "note/view";
     }
 
 }

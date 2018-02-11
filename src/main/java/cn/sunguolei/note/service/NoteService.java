@@ -8,4 +8,6 @@ public interface NoteService {
     List<Note> index(int userId);
 
     int create(Note note);
+
+    Note findNoteById(int id);
 }
