@@ -92,14 +92,12 @@
                 <li>
                     <a href="#" th:href="@{/weblog/index}">关于我们</a>
                 </li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li th:if="${#httpServletRequest.remoteUser}">
-                    <a href="#" class="btn">
-                        <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.departmentName}"></span>
-                    </a>
-                </li>
             </ul>-->
+            <ul class="nav navbar-nav">
+                <li>
+                    <a th:href="@{/note/index}">我的笔记</a>
+                </li>
+            </ul>
             <!--登录按钮-->
             <ul class="nav navbar-nav navbar-right">
                 <li id="login">
