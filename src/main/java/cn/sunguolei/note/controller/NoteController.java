@@ -98,6 +98,10 @@ public class NoteController {
         // 调用 service 创建笔记
         int number = noteService.create(note);
 
+        if (number > 0) {
+            logger.debug("笔记创建成功");
+        }
+
         // 返回笔记列表页
         return "redirect:/note/index";
     }
