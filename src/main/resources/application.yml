@@ -11,6 +11,9 @@ spring:
   mvc:
     favicon:
       enabled: false
+  messages:
+    basename: message/messages
+    encoding: utf-8
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
