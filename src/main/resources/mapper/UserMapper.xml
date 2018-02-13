@@ -31,10 +31,10 @@
         INSERT INTO t_user (username,password, create_time,email)
         VALUES (#{username}, #{password}, #{createTime}, #{email})
     </insert>
-    <select id="getUserCountByIdActivateStatus" parameterType="cn.sunguolei.note.domain.User" resultType="java.lang.Integer">
+    <select id="getUserCountByNameActivateStatus" parameterType="cn.sunguolei.note.domain.User" resultType="java.lang.Integer">
         SELECT count(1)
         FROM t_user
-        WHERE id = #{id} AND activate_status = #{activateStatus} AND activate_code = #{activateCode}
+        WHERE username = #{username} AND activate_status = #{activateStatus} AND activate_code = #{activateCode}
     </select>
     <update id="SetUserActivateStatus" parameterType="cn.sunguolei.note.domain.User">
         UPDATE t_user SET activate_status = #{activateStatus} WHERE username=#{username}

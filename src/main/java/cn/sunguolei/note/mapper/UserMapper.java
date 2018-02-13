@@ -20,7 +20,7 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    int getUserCountByIdActivateStatus(User user);
+    int getUserCountByNameActivateStatus(User user);
 
     /**
      *

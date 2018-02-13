@@ -19,7 +19,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    int getUserCountByIdActivateStatus(User user);
+    int getUserCountByNameActivateStatus(User user);
 
     /**
      *
