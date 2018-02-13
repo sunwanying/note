@@ -86,23 +86,23 @@ public class UserController {
             String[] userArray = decode.split("_");
 
             if (userArray.length == 2) {
-                //解析出userid和code
+                //解析出 username 和 code
                 String username = userArray[0];
                 String code = userArray[1];
 
-                //根据userid和code，判断是否合法注册用户
+                //根据 username 和code，判断是否合法注册用户
                 User userParam = new User();
 
                 userParam.setUsername(username);
                 userParam.setActivateStatus(0);
                 userParam.setActivateCode(code);
-                int count = userService.getUserCountByIdActivateStatus(userParam);
+                int count = userService.getUserCountByNameActivateStatus(userParam);
 
                 if (count > 0) {
                     //如果是合法用户，修改校验标识
                     userParam.setActivateStatus(1);
                     int success = userService.SetUserActivateStatus(userParam);
-                    if (success <= 0){
+                    if (success <= 0) {
                         //如果是合法用户，修改校验标识
                         baseModel.setReturnCode(104);
                         baseModel.setMessage("用户不存在或者已注册成功");
@@ -118,10 +118,10 @@ public class UserController {
             }
         }
 
-        if(baseModel.getReturnCode() > 0){
+        if (baseModel.getReturnCode() > 0) {
             model.addAttribute("msg", baseModel.getMessage());
             return "user/add";
-        }else {
+        } else {
             model.addAttribute("msg", "注册成功，请登录");
             return "login";
         }

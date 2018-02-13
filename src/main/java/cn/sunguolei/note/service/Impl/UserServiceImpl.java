@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getUserCountByIdActivateStatus(User user) {
-        return userMapper.getUserCountByIdActivateStatus(user);
+    public int getUserCountByNameActivateStatus(User user) {
+        return userMapper.getUserCountByNameActivateStatus(user);
     }
 
     @Override

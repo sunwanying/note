@@ -56,7 +56,7 @@ public class ApiController {
                 userParam.setUsername(username);
                 userParam.setActivateStatus(0);
                 userParam.setActivateCode(code);
-                int count = userService.getUserCountByIdActivateStatus(userParam);
+                int count = userService.getUserCountByNameActivateStatus(userParam);
 
                 if (count > 0) {
                     //如果是合法用户，修改校验标识
