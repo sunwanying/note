@@ -1,5 +1,6 @@
 package cn.sunguolei.note.controller;
 
+import cn.sunguolei.note.domain.BaseModel;
 import cn.sunguolei.note.utils.UserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

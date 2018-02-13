@@ -34,6 +34,16 @@ public class UserServiceImpl implements UserService {
     public int create(User user) {
         return userMapper.create(user);
     }
+
+    @Override
+    public int getUserCountByIdActivateStatus(User user) {
+        return userMapper.getUserCountByIdActivateStatus(user);
+    }
+
+    @Override
+    public int SetUserActivateStatus(User user){
+        return userMapper.SetUserActivateStatus(user);
+    }
 }
 
 
