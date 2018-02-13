@@ -100,15 +100,4 @@ public class DesUtil {
 
         return cipher.doFinal(data);
     }
-
-    /**
-     * test method
-     */
-    public static void main(String[] args) throws Exception {
-        String data = "123 456";
-        String key = "wow!@#$%";
-        System.err.println(encrypt(data, key));
-        System.err.println(decrypt(encrypt(data, key), key));
-
-    }
 }

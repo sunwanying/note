@@ -38,6 +38,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${yingnote.key}")
     private String key;
 
+    @Value("${yingnote.email}")
+    String emailFrom;
+
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
         this.mailSender = mailSender;
@@ -57,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         message.setSubject("欢迎注册");
         message.setTo(recipientEmail);
-        message.setFrom("yingnote_dev@163.com", "YingNote");
+        message.setFrom(emailFrom, "YingNote");
         logger.info("接收人邮箱为: {}", recipientEmail);
         // Create the HTML body using Thymeleaf
         final String htmlContent = this.htmlTemplateEngine.process(EMAIL_SIMPLE_REGISTER_NAME, ctx);
