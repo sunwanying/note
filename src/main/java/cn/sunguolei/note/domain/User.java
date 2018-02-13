@@ -8,7 +8,8 @@ public class User {
     private String password;
     private LocalDateTime createTime;
     private String email;
-    private int status;
+    private int activateStatus;
+    private String activateCode;
 
     public int getId() {
         return id;
@@ -48,5 +49,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getActivateStatus() {
+        return activateStatus;
+    }
+
+    public void setActivateStatus(int activateStatus) {
+        this.activateStatus = activateStatus;
+    }
+
+    public String getActivateCode() {
+        return activateCode;
+    }
+
+    public void setActivateCode(String activateCode) {
+        this.activateCode = activateCode;
     }
 }

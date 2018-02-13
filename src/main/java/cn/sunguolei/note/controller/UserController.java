@@ -39,16 +39,6 @@ public class UserController {
         List<User> userList = userService.index();
         // 将用户列表存放到 model 中，返回给前端页面
         model.addAttribute("userList", userList);
-
-        User user = new User();
-        user.setUsername("lvyazhou");
-        try {
-            emailService.sendSimpleRegisterMail("869138324@qq.com", Locale.CHINA, user);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
         return "user/index";
     }
 
@@ -63,19 +53,19 @@ public class UserController {
         user.setCreateTime(createTime);
         String password = new BCryptPasswordEncoder(11).encode(user.getPassword());
         user.setPassword(password);
-        String resultDuplicateusername = userService.duplicateUsername(user.getUsername());
-        String resultDuplicateemail = userService.duplicateEmail(user.getEmail());
-        if (resultDuplicateusername != null && resultDuplicateusername.length() != 0) {
+        User resultCheckUsername = userService.findUserByUsername(user.getUsername());
+        User resultCheckEmail = userService.checkEmail(user.getEmail());
+        if (resultCheckUsername != null) {
 
             model.addAttribute("msg", "注册失败,用户名重复");
             return "user/add";
-        } else if (resultDuplicateemail != null && resultDuplicateemail.length() != 0) {
+        } else if (resultCheckEmail != null) {
             model.addAttribute("msg", "注册失败,邮箱重复");
             return "user/add";
         } else {
             userService.create(user);
             model.addAttribute("msg", "注册成功");
-//            emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
+//          emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
         }
         return "login";
     }
