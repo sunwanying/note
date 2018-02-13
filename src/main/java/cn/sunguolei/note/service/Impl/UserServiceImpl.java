@@ -26,8 +26,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.index();
     }
 
+    public User checkEmail(String email) {
+        return userMapper.checkEmail(email);
+    }
+
     @Override
     public int create(User user) {
         return userMapper.create(user);
     }
 }
+
+
+

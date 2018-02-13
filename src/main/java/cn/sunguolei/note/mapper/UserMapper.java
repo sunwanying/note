@@ -11,5 +11,7 @@ public interface UserMapper {
 
     List<User> index();
 
+    User checkEmail(String email);
+
     int create(User user);
 }

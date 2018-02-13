@@ -10,6 +10,8 @@
         <id property="password" column="password"/>
         <id property="createTime" column="create_time"/>
         <id property="email" column="email"/>
+        <id property="activateStatus" column="activate_status"/>
+        <id property="activateCode" column="activate_code"/>
     </resultMap>
     <select id="findUserByUsername" resultMap="UserMap">
         SELECT *
@@ -19,6 +21,11 @@
     <select id="index" resultMap="UserMap">
         SELECT *
         FROM t_user
+    </select>
+    <select id="checkEmail" resultMap="UserMap">
+        SELECT *
+        FROM t_user
+        WHERE email = #{email}
     </select>
     <insert id="create" parameterType="cn.sunguolei.note.domain.User">
         INSERT INTO t_user (username,password, create_time,email)

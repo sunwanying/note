@@ -5,6 +5,15 @@ spring:
     password: Testnote@2018
     driver-class-name: com.mysql.jdbc.Driver
 
+  mail:
+    host: smtp.163.com
+    username: yingnote_dev@163.com
+    password: dSjal1985ganeL28
+    properties:
+        mail:
+            smtp:
+                auth: true
+                timeout: 25000
 logging:
   level:
     cn.sunguolei.note: debug
