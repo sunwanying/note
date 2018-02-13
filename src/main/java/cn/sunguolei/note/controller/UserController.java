@@ -5,7 +5,7 @@ import cn.sunguolei.note.domain.User;
 import cn.sunguolei.note.service.EmailService;
 import cn.sunguolei.note.service.UserService;
 import cn.sunguolei.note.utils.DesUtil;
-import org.apache.tomcat.jni.Local;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+    @Value("${yingnote.key}")
+    private String KEY_;
     private UserService userService;
     private EmailService emailService;
 
@@ -74,53 +73,57 @@ public class UserController {
         return "login";
     }
 
-    /**
-     * 根据注册后加密参数，检测用户是否通过校验
-     * @param sign 加密参数
-     * @return 返回校验结果
-     */
-    public BaseModel checkRegisterCode(String sign){
+    @RequestMapping("/activeUser")
+    public String checkRegisterCode(Model model, String sign) throws Exception {
         BaseModel baseModel = new BaseModel();
 
-        if(sign == null || sign.length() < 1){
+        if (sign == null || sign.length() < 1) {
             baseModel.setReturnCode(101);
             baseModel.setMessage("参数sign非法");
-        }else {
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(11);
+        } else {
+            String decode = DesUtil.decrypt(sign, KEY_);
 
-            //String decode = bCryptPasswordEncoder.
+            String[] userArray = decode.split("_");
 
-            String[] userArray = sign.split("_");
-
-
-            if(userArray != null && userArray.length == 2){
+            if (userArray.length == 2) {
                 //解析出userid和code
-                int userId = Integer.parseInt(userArray[0]);
+                String username = userArray[0];
                 String code = userArray[1];
 
                 //根据userid和code，判断是否合法注册用户
                 User userParam = new User();
 
-                userParam.setId(userId);
+                userParam.setUsername(username);
                 userParam.setActivateStatus(0);
                 userParam.setActivateCode(code);
                 int count = userService.getUserCountByIdActivateStatus(userParam);
 
-                if(count > 1){
+                if (count > 0) {
                     //如果是合法用户，修改校验标识
                     userParam.setActivateStatus(1);
-                    userService.SetUserActivateStatus(userParam);
-                }else {
+                    int success = userService.SetUserActivateStatus(userParam);
+                    if (success <= 0){
+                        //如果是合法用户，修改校验标识
+                        baseModel.setReturnCode(104);
+                        baseModel.setMessage("用户不存在或者已注册成功");
+                    }
+                } else {
                     //如果是合法用户，修改校验标识
                     baseModel.setReturnCode(102);
                     baseModel.setMessage("用户不存在或者已注册成功");
                 }
-            }else {
+            } else {
                 baseModel.setReturnCode(103);
                 baseModel.setMessage("加密参数格式错误");
             }
         }
 
-        return  new BaseModel();
+        if(baseModel.getReturnCode() > 0){
+            model.addAttribute("msg", baseModel.getMessage());
+            return "user/add";
+        }else {
+            model.addAttribute("msg", "注册成功，请登录");
+            return "login";
+        }
     }
 }
