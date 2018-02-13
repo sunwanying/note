@@ -5,6 +5,7 @@ import cn.sunguolei.note.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -31,6 +32,9 @@ public class EmailServiceImpl implements EmailService {
     private static final String EMAIL_SIMPLE_REGISTER_NAME = "email/register";
     private final JavaMailSender mailSender;
 
+    @Value("${yingnote.email}")
+    String emailFrom;
+
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
         this.mailSender = mailSender;
@@ -47,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         message.setSubject("欢迎注册");
         message.setTo(recipientEmail);
-        message.setFrom("yingnote_service@163.com", "YingNote");
+        message.setFrom(emailFrom, "YingNote");
         logger.info("接收人邮箱为: {}", recipientEmail);
         // Create the HTML body using Thymeleaf
         final String htmlContent = this.htmlTemplateEngine.process(EMAIL_SIMPLE_REGISTER_NAME, ctx);

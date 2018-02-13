@@ -14,4 +14,18 @@ public interface UserMapper {
     User checkEmail(String email);
 
     int create(User user);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    int getUserCountByIdActivateStatus(User user);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    int SetUserActivateStatus(User user);
 }
