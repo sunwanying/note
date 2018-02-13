@@ -16,14 +16,12 @@ public interface UserMapper {
     int create(User user);
 
     /**
-     *
      * @param user
      * @return
      */
     int getUserCountByNameActivateStatus(User user);
 
     /**
-     *
      * @param user
      * @return
      */

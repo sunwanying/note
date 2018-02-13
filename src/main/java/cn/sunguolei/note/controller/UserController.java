@@ -58,6 +58,10 @@ public class UserController {
         user.setPassword(password);
         User resultCheckUsername = userService.findUserByUsername(user.getUsername());
         User resultCheckEmail = userService.checkEmail(user.getEmail());
+        int number = (int) (Math.random() * 90000 + 10000);
+        char c = (char) (int) (Math.random() * 26 + 97);
+        String code = String.valueOf(number) + c;
+        user.setActivateCode(code);
         if (resultCheckUsername != null) {
 
             model.addAttribute("msg", "注册失败,用户名重复");
@@ -67,8 +71,16 @@ public class UserController {
             return "user/add";
         } else {
             userService.create(user);
+            try {
+                emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             model.addAttribute("msg", "注册成功");
-//          emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
         }
         return "login";
     }
