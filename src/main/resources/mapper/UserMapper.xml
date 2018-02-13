@@ -20,6 +20,16 @@
         SELECT *
         FROM t_user
     </select>
+    <select id="duplicateUsername" resultType="String" parameterType="String">
+        SELECT username
+        FROM t_user
+        WHERE username = #{username}
+    </select>
+    <select id="duplicateEmail"  resultType="String" parameterType="String">
+        SELECT email
+        FROM t_user
+        WHERE email = #{email}
+    </select>
     <insert id="create" parameterType="cn.sunguolei.note.domain.User">
         INSERT INTO t_user (username,password, create_time,email)
         VALUES (#{username}, #{password}, #{createTime}, #{email})

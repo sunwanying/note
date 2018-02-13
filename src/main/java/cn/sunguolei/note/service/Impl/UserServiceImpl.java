@@ -26,8 +26,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.index();
     }
 
+    public String duplicateUsername(String username) {
+        return userMapper.duplicateUsername(username);
+    }
+
+    public String duplicateEmail(String email) {
+        return userMapper.duplicateEmail(email);
+    }
+
     @Override
     public int create(User user) {
         return userMapper.create(user);
     }
 }
+
+
+

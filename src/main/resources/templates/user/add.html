@@ -8,24 +8,33 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form th:action="@{/user/create}" method="post">
+    <form th:action="@{/user/create}" method="post" name="f">
 
         <div class="form-group">
+            <div th:text="${msg}" class="alert alert-info" role="alert">
+            </div>
+            <label for="email">邮箱</label>
+            <input class="form-control" id="email" name="email" placeholder="请输入邮箱,需要通过邮箱激活账号" />
             <label for="username">用户名</label>
+<<<<<<< Updated upstream
             <input class="form-control" id="username" name="username" placeholder="请输入用户名"/>
             <label for="email">邮箱</label>
             <input class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
+=======
+            <input class="form-control" id="username" name="username" placeholder="请输入用户名" />
+>>>>>>> Stashed changes
             <label for="password">密码</label>
             <input class="form-control" id="password" name="password" placeholder="请输入密码"/>
             <label for="ConfirmPassword">确认密码</label>
             <input class="form-control" id="ConfirmPassword" name="ConfirmPassword" placeholder="请输入确认密码"/>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:80px;">注册</button>
+        <button type="submit" class="btn btn-primary" id="register" style="width:80px;">注册</button>
     </form>
 </div>
 
 <div layout:fragment="customScript">
+    <script type="text/javascript" src="/js/register.js"></script>
 </div>
 </body>
 </html>

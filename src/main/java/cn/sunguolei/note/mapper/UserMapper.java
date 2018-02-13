@@ -11,5 +11,9 @@ public interface UserMapper {
 
     List<User> index();
 
+    String duplicateUsername(String username);
+
+    String duplicateEmail(String email);
+
     int create(User user);
 }

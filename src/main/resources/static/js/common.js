@@ -11,7 +11,7 @@ $(function () {
                 var jsonObj = JSON.parse(jsonStr);
 
                 if (jsonObj.isLogin === "true") {
-                    $("#username").text(jsonObj.username);
+                    $("#login_name").text(jsonObj.username);
                     $("#login").hide();
                     $("#userDomain").show();
                 } else {
