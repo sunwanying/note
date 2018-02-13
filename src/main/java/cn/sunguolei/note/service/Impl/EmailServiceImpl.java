@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -39,15 +40,21 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendSimpleRegisterMail(final String recipientEmail, final Locale locale, User user)
             throws MessagingException, UnsupportedEncodingException {
+        int number = (int) (Math.random() * 90000 + 10000);
+        char c = (char) (int) (Math.random() * 26 + 97);
+        String code = user.getId() + "_" + String.valueOf(number) + c;
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(11);
+        String url = "http://localhost:8080/api/activeUser?sign=" + bCryptPasswordEncoder.encode(code);
         // Prepare the evaluation context
         final Context ctx = new Context(locale);
         ctx.setVariable("userName", user.getUsername());
+        ctx.setVariable("url", url);
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         message.setSubject("欢迎注册");
         message.setTo(recipientEmail);
-        message.setFrom("yingnote_service@163.com", "YingNote");
+        message.setFrom("yingnote_dev@163.com", "YingNote");
         logger.info("接收人邮箱为: {}", recipientEmail);
         // Create the HTML body using Thymeleaf
         final String htmlContent = this.htmlTemplateEngine.process(EMAIL_SIMPLE_REGISTER_NAME, ctx);

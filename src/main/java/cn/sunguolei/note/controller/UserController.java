@@ -64,8 +64,14 @@ public class UserController {
             return "user/add";
         } else {
             userService.create(user);
+            try {
+                emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             model.addAttribute("msg", "注册成功");
-//          emailService.sendSimpleRegisterMail(user.getEmail(), Locale.CHINA, user);
         }
         return "login";
     }
