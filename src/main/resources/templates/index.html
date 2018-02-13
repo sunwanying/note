@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout}">
 <head>
     <meta charset="UTF-8"/>
-    <title>home</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>预留给所有人笔记展示的地方以及猜你喜欢、广告推荐等</h1>
+    <h1 th:text="#{welcome}">预留给所有人笔记展示的地方以及猜你喜欢、广告推荐等</h1>
 
     <div>
         <a href="/note/add">写笔记</a>
