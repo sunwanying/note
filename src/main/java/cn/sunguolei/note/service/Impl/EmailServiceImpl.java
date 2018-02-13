@@ -5,6 +5,7 @@ import cn.sunguolei.note.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,11 +20,14 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import static cn.sunguolei.note.utils.DesUtil.encrypt;
+
 /**
  * Created by lvyz on 2018/2/12.
  */
 @Service
 public class EmailServiceImpl implements EmailService {
+
     /**
      * 给新注册用户发送邮件
      */
@@ -31,6 +35,8 @@ public class EmailServiceImpl implements EmailService {
     private final TemplateEngine htmlTemplateEngine;
     private static final String EMAIL_SIMPLE_REGISTER_NAME = "email/register";
     private final JavaMailSender mailSender;
+    @Value("${yingnote.key}")
+    private String key;
 
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
@@ -39,12 +45,9 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public void sendSimpleRegisterMail(final String recipientEmail, final Locale locale, User user)
-            throws MessagingException, UnsupportedEncodingException {
-        int number = (int) (Math.random() * 90000 + 10000);
-        char c = (char) (int) (Math.random() * 26 + 97);
-        String code = user.getId() + "_" + String.valueOf(number) + c;
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(11);
-        String url = "http://localhost:8080/api/activeUser?sign=" + bCryptPasswordEncoder.encode(code);
+            throws Exception {
+        String code = user.getUsername()+"_"+user.getActivateCode();
+        String url = "http://localhost:8080/user/activeUser?sign=" + encrypt(code, key);
         // Prepare the evaluation context
         final Context ctx = new Context(locale);
         ctx.setVariable("userName", user.getUsername());

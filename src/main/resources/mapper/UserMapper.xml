@@ -28,7 +28,7 @@
         WHERE email = #{email}
     </select>
     <insert id="create" parameterType="cn.sunguolei.note.domain.User">
-        INSERT INTO t_user (username,password, create_time,email)
-        VALUES (#{username}, #{password}, #{createTime}, #{email})
+        INSERT INTO t_user (username,password, create_time,email,activate_code)
+        VALUES (#{username}, #{password}, #{createTime}, #{email},#{activateCode})
     </insert>
 </mapper>
