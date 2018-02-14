@@ -1,11 +1,7 @@
 package cn.sunguolei.note.service;
 
 import cn.sunguolei.note.domain.User;
-import org.hibernate.validator.constraints.Email;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**

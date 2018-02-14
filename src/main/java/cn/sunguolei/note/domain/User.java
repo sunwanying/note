@@ -66,4 +66,17 @@ public class User {
     public void setActivateCode(String activateCode) {
         this.activateCode = activateCode;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", createTime=" + createTime +
+                ", email='" + email + '\'' +
+                ", activateStatus=" + activateStatus +
+                ", activateCode='" + activateCode + '\'' +
+                '}';
+    }
 }
