@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int SetUserActivateStatus(User user){
+    public int SetUserActivateStatus(User user) {
         return userMapper.SetUserActivateStatus(user);
     }
 }
