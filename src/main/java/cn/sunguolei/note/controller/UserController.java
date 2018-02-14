@@ -80,7 +80,7 @@ public class UserController {
         logger.debug("开始创建用户，用户名 - {}", user.getUsername());
 
         // 1. 先检查用户名和邮箱是否重复，重复的话就不用执行下面的逻辑
-        User resultCheckUsername = userService.findUserByUsername(user.getUsername());
+        User resultCheckUsername = userService.checkUserByUsername(user.getUsername());
         User resultCheckEmail = userService.checkEmail(user.getEmail());
 
         if (resultCheckUsername != null) {
