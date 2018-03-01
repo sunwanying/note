@@ -5,6 +5,7 @@ import cn.sunguolei.note.domain.User;
 import cn.sunguolei.note.service.EmailService;
 import cn.sunguolei.note.service.UserService;
 import cn.sunguolei.note.utils.DesUtil;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/user")
@@ -114,7 +120,7 @@ public class UserController {
                     //如果是合法用户，修改校验标识
                     userParam.setActivateStatus(1);
                     int success = userService.SetUserActivateStatus(userParam);
-                    if (success <= 0){
+                    if (success <= 0) {
                         //如果是合法用户，修改校验标识
                         baseModel.setReturnCode(104);
                         baseModel.setMessage("用户不存在或者已注册成功");
@@ -130,12 +136,30 @@ public class UserController {
             }
         }
 
-        if(baseModel.getReturnCode() > 0){
+        if (baseModel.getReturnCode() > 0) {
             model.addAttribute("msg", baseModel.getMessage());
             return "user/add";
-        }else {
+        } else {
             model.addAttribute("msg", "注册成功，请登录");
             return "login";
         }
+    }
+
+    //删除cookie
+    @RequestMapping("/toLogout")
+    public String toLogout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        System.out.println(cookies.length);
+        for (Cookie cookie : cookies) {
+            //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
+            if (cookie.getName().equals("token")) {
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                break;
+            }
+        }
+        return "index";
     }
 }
