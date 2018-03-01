@@ -86,9 +86,9 @@ public class UserUtil {
      */
     public static HttpServletResponse setTokenToCookie(HttpServletResponse response, String token) {
 
-        // token 存放到 cookie 中，并设置到期时间为 30 天
+        // token 存放到 cookie 中，并设置到期时间为 7 天
         Cookie tokenCookie = new Cookie("token", token);
-        tokenCookie.setMaxAge(30 * 24 * 60 * 60);
+        tokenCookie.setMaxAge(7 * 24 * 60 * 60);
         tokenCookie.setPath("/");
         response.addCookie(tokenCookie);
 

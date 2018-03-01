@@ -22,6 +22,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User checkUserByUsername(String username) {
+        return userMapper.checkUserByUsername(username);
+    }
+
+    @Override
     public List<User> index() {
         return userMapper.index();
     }
@@ -36,12 +41,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getUserCountByIdActivateStatus(User user) {
-        return userMapper.getUserCountByIdActivateStatus(user);
+    public int getUserCountByNameActivateStatus(User user) {
+        return userMapper.getUserCountByNameActivateStatus(user);
     }
 
     @Override
-    public int SetUserActivateStatus(User user){
+    public int SetUserActivateStatus(User user) {
         return userMapper.SetUserActivateStatus(user);
     }
 }

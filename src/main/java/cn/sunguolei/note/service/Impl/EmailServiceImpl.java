@@ -7,17 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import static cn.sunguolei.note.utils.DesUtil.encrypt;
@@ -38,8 +33,11 @@ public class EmailServiceImpl implements EmailService {
     @Value("${yingnote.key}")
     private String key;
 
-    @Value("${yingnote.email}")
-    String emailFrom;
+    @Value("${spring.mail.username}")
+    private String emailFrom;
+
+    @Value("${yingnote.host}")
+    private String host;
 
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender, TemplateEngine htmlTemplateEngine) {
@@ -47,14 +45,25 @@ public class EmailServiceImpl implements EmailService {
         this.htmlTemplateEngine = htmlTemplateEngine;
     }
 
-    public void sendSimpleRegisterMail(final String recipientEmail, final Locale locale, User user)
-            throws Exception {
-        String code = user.getUsername()+"_"+user.getActivateCode();
-        String url = "http://localhost:8080/user/activeUser?sign=" + encrypt(code, key);
+    /**
+     * 发送注册邮件
+     *
+     * @param recipientEmail 接受者的邮箱
+     * @param locale         区域 region
+     * @param user           注册用户
+     * @throws Exception 异常
+     */
+    public void sendSimpleRegisterMail(final String recipientEmail, final Locale locale, User user) throws Exception {
+
+        // 拼接验证 url
+        String code = user.getUsername() + "_" + user.getActivateCode();
+        String url = host + "/user/activeUser?sign=" + encrypt(code, key);
+
         // Prepare the evaluation context
         final Context ctx = new Context(locale);
         ctx.setVariable("userName", user.getUsername());
         ctx.setVariable("url", url);
+
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
@@ -62,9 +71,12 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(recipientEmail);
         message.setFrom(emailFrom, "YingNote");
         logger.info("接收人邮箱为: {}", recipientEmail);
+
         // Create the HTML body using Thymeleaf
         final String htmlContent = this.htmlTemplateEngine.process(EMAIL_SIMPLE_REGISTER_NAME, ctx);
         message.setText(htmlContent, true);
+
+        // 发送邮件
         mailSender.send(mimeMessage);
     }
 }
