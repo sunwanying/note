@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -202,5 +205,23 @@ public class UserController {
             model.addAttribute("msg", "注册成功，请登录");
             return "login";
         }
+    }
+
+    //删除cookie
+    @RequestMapping("/toLogout")
+    public String toLogout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        System.out.println(cookies.length);
+        for (Cookie cookie : cookies) {
+            //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
+            if (cookie.getName().equals("token")) {
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                break;
+            }
+        }
+        return "index";
     }
 }
