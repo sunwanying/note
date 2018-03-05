@@ -235,11 +235,11 @@ public class UserController {
         // 获取用户登录信息和用户信息
         Map<String, String> userInfoMap = UserUtil.getUserIdentity(request);
         // 通过用户名查找对应的用户,获取用户密码
-        String loginname = userService.findUserByUsername(userInfoMap.get("username")).getUsername();
-        String encodepwd = userService.findUserByUsername(userInfoMap.get("username")).getPassword();
+        String loginName = userService.findUserByUsername(userInfoMap.get("username")).getUsername();
+        String encodedPwd = userService.findUserByUsername(userInfoMap.get("username")).getPassword();
         //检查原密码是否正确
-        if (new BCryptPasswordEncoder(11).matches(OldPassword, encodepwd)) {
-            user.setUsername(loginname);
+        if (new BCryptPasswordEncoder(11).matches(OldPassword, encodedPwd)) {
+            user.setUsername(loginName);
             user.setPassword(new BCryptPasswordEncoder(11).encode(NewPassword));
             userService.SetUserPassword(user);
             Cookie[] cookies = request.getCookies();
@@ -254,7 +254,7 @@ public class UserController {
                     break;
                 }
             }
-            return "index";
+            return "login";
         } else {
             model.addAttribute("msg", "原密码错误，请重新输入");
             return "user/modifyPwd";

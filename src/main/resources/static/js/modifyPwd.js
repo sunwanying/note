@@ -3,15 +3,20 @@
  */
 $(function () {
     $("#ModifyPassword").click(function () {
-        var pwd = $("#NewPassword").val();
+        var OldPwd = $("#OldPassword").val();
+        var NewPwd = $("#NewPassword").val();
         var ConfirmPwd = $("#ConfirmNewPassword").val();
-        if (pwd.trim() === "") {
+        if (OldPwd.trim() === "") {
+            alert("请输入原密码");
+            return false;
+        }
+        else if (NewPwd.trim() === "") {
             alert("请输入新密码");
             return false;
         } else if (ConfirmPwd.trim() === "") {
             alert("请输入确认密码");
             return false;
-        } else if (ConfirmPwd != pwd) {
+        } else if (ConfirmPwd != NewPwd) {
             alert("两次输入的密码不一致");
             return false;
         }
