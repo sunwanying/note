@@ -59,7 +59,7 @@ public class NoteController {
             return "note/index";
         }
         // 如果找不到 token，就返回 登录 页面
-        return "redirect:/toLoginPage";
+        return "redirect:/toLogin";
     }
 
     /**

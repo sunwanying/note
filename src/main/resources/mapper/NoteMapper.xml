@@ -16,7 +16,7 @@
     <select id="index" resultMap="NoteMap" parameterType="int">
         SELECT *
         FROM t_note
-        WHERE user_id = #{id}
+        WHERE user_id = #{id} ORDER BY create_time DESC
     </select>
 
     <insert id="create" parameterType="cn.sunguolei.note.domain.Note">
