@@ -55,4 +55,10 @@
         WHERE username = #{username}
     </update>
 
+    <update id="SetUserPassword" parameterType="cn.sunguolei.note.domain.User">
+        UPDATE t_user
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
 </mapper>

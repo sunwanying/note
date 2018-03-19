@@ -29,4 +29,7 @@ public interface UserService {
      * @return 更新成功的条数
      */
     int SetUserActivateStatus(User user);
+
+    int SetUserPassword(User user);
+
 }

@@ -116,8 +116,9 @@
                             <a href="/user/personIndex">密码修改</a>
                         </li>
                         <li>
-                            <a href="#" onclick="$('#form').submit();">退出</a>
-                            <form style="visibility: hidden" id="form" method="post" th:action="@{/logout}"></form>
+                            <a href="/user/toLogout">退出</a>
+                            <!--<a href="/user/tologout" onclick="$('#form').submit();">退出</a>-->
+                            <!--<form style="visibility: hidden" id="form" method="post" th:action="@{/tologout}"></form>-->
                         </li>
                     </ul>
                 </li>

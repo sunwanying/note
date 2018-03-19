@@ -49,6 +49,10 @@ public class UserServiceImpl implements UserService {
     public int SetUserActivateStatus(User user) {
         return userMapper.SetUserActivateStatus(user);
     }
+
+    public int SetUserPassword(User user) {
+        return  userMapper.SetUserPassword(user);
+    }
 }
 
 

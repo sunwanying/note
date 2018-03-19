@@ -5,9 +5,11 @@ import cn.sunguolei.note.domain.User;
 import cn.sunguolei.note.service.EmailService;
 import cn.sunguolei.note.service.UserService;
 import cn.sunguolei.note.utils.DesUtil;
+import cn.sunguolei.note.utils.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -30,16 +36,13 @@ public class UserController {
 
     private UserService userService;
     private EmailService emailService;
+    private AuthenticationManagerBuilder auth;
 
-    public UserController(UserService userService, EmailService emailService) {
+    public UserController(UserService userService, EmailService emailService, AuthenticationManagerBuilder auth) {
         this.userService = userService;
         this.emailService = emailService;
+        this.auth = auth;
     }
-//
-//    @GetMapping("/findUserByUsername")
-//    public User findUserByUsername(String username) {
-//        return userService.findUserByUsername(username);
-//    }
 
     /**
      * 所有用户的列表页，做权限控制，只允许管理员查看
@@ -203,4 +206,59 @@ public class UserController {
             return "login";
         }
     }
+
+    //删除cookie
+    @RequestMapping("/toLogout")
+    public String toLogout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        System.out.println(cookies.length);
+        for (Cookie cookie : cookies) {
+            //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
+            if (cookie.getName().equals("token")) {
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                break;
+            }
+        }
+        return "index";
+    }
+
+    @RequestMapping("/personIndex")
+    public String modifyPwd() {
+        return "user/modifyPwd";
+    }
+
+    @RequestMapping("/update")
+    public String update(HttpServletRequest request, HttpServletResponse response, User user, String OldPassword, String NewPassword, Model model) {
+        // 获取用户登录信息和用户信息
+        Map<String, String> userInfoMap = UserUtil.getUserIdentity(request);
+        // 通过用户名查找对应的用户,获取用户密码
+        String loginName = userService.findUserByUsername(userInfoMap.get("username")).getUsername();
+        String encodedPwd = userService.findUserByUsername(userInfoMap.get("username")).getPassword();
+        //检查原密码是否正确
+        if (new BCryptPasswordEncoder(11).matches(OldPassword, encodedPwd)) {
+            user.setUsername(loginName);
+            user.setPassword(new BCryptPasswordEncoder(11).encode(NewPassword));
+            userService.SetUserPassword(user);
+            Cookie[] cookies = request.getCookies();
+            System.out.println(cookies.length);
+            for (Cookie cookie : cookies) {
+                //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
+                if (cookie.getName().equals("token")) {
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+            return "login";
+        } else {
+            model.addAttribute("msg", "原密码错误，请重新输入");
+            return "user/modifyPwd";
+        }
+    }
 }
+
