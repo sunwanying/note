@@ -16,7 +16,8 @@
     <select id="index" resultMap="NoteMap" parameterType="int">
         SELECT *
         FROM t_note
-        WHERE user_id = #{id} ORDER BY create_time DESC
+        WHERE user_id = #{id}
+        ORDER BY create_time DESC
     </select>
 
     <insert id="create" parameterType="cn.sunguolei.note.domain.Note">
@@ -29,5 +30,11 @@
         FROM t_note
         WHERE id = #{id}
     </select>
+
+    <update id="update" parameterType="cn.sunguolei.note.domain.Note">
+        UPDATE t_note
+        SET title = #{title}, content = #{content}, click_number = #{clickNumber}, type = #{type}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -18,81 +18,7 @@
             <a class="navbar-brand" th:text="#{app.name}" href="/">笔记博客</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <!--<ul class="nav navbar-nav">
-                <li>
-                    <a href="#" th:href="@{/servertest/index}">后端测试</a>
-                </li>
-                <li><a href="#" th:href="@{/device/index}">设备管理</a></li>
-                <li>
-                    <a href="#" th:href="@{/sqltools/index}">SQL小工具</a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        配置管理 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" th:href="@{/api/index}">接口管理</a></li>
-                        <li><a href="#" th:href="@{/project/index}">项目管理</a></li>
-                        <li><a href="#" th:href="@{/bug/index}">BUG管理</a></li>
-                        <li><a href="#" th:href="@{/brand/index}">品牌管理</a></li>
-                        <li><a href="#" th:href="@{/department/index}">部门管理</a></li>
-                        <li>
-                            <a href="#" th:href="@{/mock/index}">Mock Server</a>
-                        </li>
-                        <li>
-                            <a href="#" th:href="@{/apitest/index}">接口测试</a>
-                        </li>
-                        <li>
-                            <a href="#" th:href="@{/perf/index}">云压测</a>
-                        </li>
-                        &lt;!&ndash;<li class="divider"></li>&ndash;&gt;
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        瑞士军刀 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/eventtracking/index">页面统计检测</a></li>
-                        &lt;!&ndash;<li class="divider"></li>&ndash;&gt;
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        公共平台 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="http://gitlab.dev.daikuan.com/">GitLab</a>
-                        </li>
-                        <li>
-                            <a href="http://jenkins.dev.daikuan.com/">Jenkins</a>
-                        </li>
-                        <li>
-                            <a href="http://wiki.dev.daikuan.com/">Wiki</a>
-                        </li>
-                        <li>
-                            <a href="http://140.143.185.20:8080/">线上巡检系统</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        订餐 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a th:href="@{/order/index}">研发部</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/order/indexOther}">其他部门</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" th:href="@{/weblog/index}">关于我们</a>
-                </li>
-            </ul>-->
+
             <ul class="nav navbar-nav">
                 <li>
                     <a th:href="@{/note/index}">我的笔记</a>
@@ -117,8 +43,6 @@
                         </li>
                         <li>
                             <a href="/user/toLogout">退出</a>
-                            <!--<a href="/user/tologout" onclick="$('#form').submit();">退出</a>-->
-                            <!--<form style="visibility: hidden" id="form" method="post" th:action="@{/tologout}"></form>-->
                         </li>
                     </ul>
                 </li>

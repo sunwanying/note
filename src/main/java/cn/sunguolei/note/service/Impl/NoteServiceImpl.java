@@ -30,4 +30,9 @@ public class NoteServiceImpl implements NoteService {
     public Note findNoteById(int id) {
         return noteMapper.findNoteById(id);
     }
+
+    @Override
+    public int update(Note note) {
+        return noteMapper.update(note);
+    }
 }

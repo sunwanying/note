@@ -9,7 +9,6 @@ import cn.sunguolei.note.utils.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,12 +35,10 @@ public class UserController {
 
     private UserService userService;
     private EmailService emailService;
-    private AuthenticationManagerBuilder auth;
 
-    public UserController(UserService userService, EmailService emailService, AuthenticationManagerBuilder auth) {
+    public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
         this.emailService = emailService;
-        this.auth = auth;
     }
 
     /**
@@ -207,21 +204,13 @@ public class UserController {
         }
     }
 
-    //删除cookie
+    // 删除 cookie 中的 token
     @RequestMapping("/toLogout")
     public String toLogout(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         System.out.println(cookies.length);
-        for (Cookie cookie : cookies) {
-            //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
-            if (cookie.getName().equals("token")) {
-                cookie.setValue(null);
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-                break;
-            }
-        }
+        // 删除 token
+        deleteTokenFromCookies(response, cookies);
         return "index";
     }
 
@@ -244,20 +233,24 @@ public class UserController {
             userService.SetUserPassword(user);
             Cookie[] cookies = request.getCookies();
             System.out.println(cookies.length);
-            for (Cookie cookie : cookies) {
-                //如果找到同名cookie，就将value设置为null，将存活时间设置为0，再替换掉原cookie，这样就相当于删除了。
-                if (cookie.getName().equals("token")) {
-                    cookie.setValue(null);
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
+            deleteTokenFromCookies(response, cookies);
             return "login";
         } else {
             model.addAttribute("msg", "原密码错误，请重新输入");
             return "user/modifyPwd";
+        }
+    }
+
+    private void deleteTokenFromCookies(HttpServletResponse response, Cookie[] cookies) {
+        for (Cookie cookie : cookies) {
+            //如果找到同名 cookie，就将 value 设置为 null，将存活时间设置为 0，再替换掉原 cookie，这样就相当于删除了。
+            if (cookie.getName().equals("token")) {
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                break;
+            }
         }
     }
 }
