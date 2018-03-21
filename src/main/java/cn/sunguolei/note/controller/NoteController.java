@@ -8,7 +8,6 @@ import cn.sunguolei.note.utils.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -129,7 +128,7 @@ public class NoteController {
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") int id, Model model) {
-        String username =(String) SecurityContextHolder.getContext()
+        String username = (String) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
         User user = userService.findUserByUsername(username);
@@ -157,7 +156,7 @@ public class NoteController {
     @PostMapping("/update")
     public String update(Note note) {
 
-        String username =(String) SecurityContextHolder.getContext()
+        String username = (String) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
         User user = userService.findUserByUsername(username);
@@ -174,17 +173,6 @@ public class NoteController {
                 logger.debug("笔记更新成功");
             }
         }
-
-        // 获取请求 cookie 中的 token
-//        String token = UserUtil.getTokenFromCookie(request);
-//
-//        if (null != token) {
-//            // 获取用户登录信息和用户信息
-//            Map<String, String> userInfoMap = UserUtil.getUserIdentity(request);
-//            // 通过用户名查找对应的用户
-//            User user = userService.findUserByUsername(userInfoMap.get("username"));
-//            note.setUserId(user.getId());
-//        }
 
         // 返回笔记列表页
         return "redirect:/note/view/" + note.getId();
