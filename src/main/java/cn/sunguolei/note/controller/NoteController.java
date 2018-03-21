@@ -129,11 +129,23 @@ public class NoteController {
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") int id, Model model) {
+        String username =(String) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User user = userService.findUserByUsername(username);
+        // 当前登录的用户 ID
+        int userId = user.getId();
+        // 笔记中记录的创建者的 ID
         Note note = noteService.findNoteById(id);
+        int noteUserId = note.getUserId();
+        // 只有两者相等才能编辑笔记
+        if (userId == noteUserId) {
+            model.addAttribute("note", note);
 
-        model.addAttribute("note", note);
-
-        return "note/edit";
+            return "note/edit";
+        } else {
+            return "redirect:/note/index";
+        }
     }
 
     /**
