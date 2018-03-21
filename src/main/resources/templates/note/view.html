@@ -10,7 +10,15 @@
 
     <h2 th:text="${note.title}" class="center"></h2>
 
-    <div id="article"></div>
+    <div>
+        <a th:href="@{/note/index}">返回列表</a> |
+        <a th:href="@{'/note/edit/'+${note.id}}">编辑</a>
+    </div>
+    <div id="article" style="border: 1px solid green;"></div>
+    <div>
+        <a th:href="@{/note/index}">返回列表</a> |
+        <a th:href="@{'/note/edit/'+${note.id}}">编辑</a>
+    </div>
 
 </div>
 <div layout:fragment="customScript">

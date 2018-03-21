@@ -10,4 +10,6 @@ public interface NoteService {
     int create(Note note);
 
     Note findNoteById(int id);
+
+    int update(Note note);
 }

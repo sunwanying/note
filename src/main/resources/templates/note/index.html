@@ -21,7 +21,10 @@
             <td th:text="${note.id}" hidden>ID：id</td>
             <td th:text="${note.title}">笔记标题</td>
             <td th:text="${note.createTime}">2018-01-01 00:00:00</td>
-            <td><a th:href="@{'/note/view/' + ${note.id}}">查看</a></td>
+            <td>
+                <a th:href="@{'/note/view/' + ${note.id}}">查看</a> |
+                <a th:href="@{'/note/edit/' + ${note.id}}">更新笔记</a>
+            </td>
         </tr>
         </tbody>
     </table>

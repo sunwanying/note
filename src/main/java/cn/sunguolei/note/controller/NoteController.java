@@ -7,6 +7,7 @@ import cn.sunguolei.note.service.UserService;
 import cn.sunguolei.note.utils.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +60,7 @@ public class NoteController {
             return "note/index";
         }
         // 如果找不到 token，就返回 登录 页面
-        return "redirect:/toLoginPage";
+        return "redirect:/toLogin";
     }
 
     /**
@@ -118,6 +119,63 @@ public class NoteController {
         model.addAttribute("note", note);
 
         return "note/view";
+    }
+
+    /**
+     * 打开更新笔记页面
+     *
+     * @return 返回对应页面
+     */
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") int id, Model model) {
+        String username = (String) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User user = userService.findUserByUsername(username);
+        // 当前登录的用户 ID
+        int userId = user.getId();
+        // 笔记中记录的创建者的 ID
+        Note note = noteService.findNoteById(id);
+        int noteUserId = note.getUserId();
+        // 只有两者相等才能编辑笔记
+        if (userId == noteUserId) {
+            model.addAttribute("note", note);
+
+            return "note/edit";
+        } else {
+            return "redirect:/note/index";
+        }
+    }
+
+    /**
+     * 更新笔记
+     *
+     * @param note 从表单中获取笔记信息
+     * @return 重定向到更新后的笔记
+     */
+    @PostMapping("/update")
+    public String update(Note note) {
+
+        String username = (String) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        User user = userService.findUserByUsername(username);
+        // 当前登录的用户 ID
+        int userId = user.getId();
+        // 笔记中记录的创建者的 ID
+        int noteUserId = noteService.findNoteById(note.getId()).getUserId();
+        // 只有两者相等才能编辑笔记
+        if (userId == noteUserId) {
+            // 调用 service 更新笔记
+            int number = noteService.update(note);
+
+            if (number > 0) {
+                logger.debug("笔记更新成功");
+            }
+        }
+
+        // 返回笔记列表页
+        return "redirect:/note/view/" + note.getId();
     }
 
 }
