@@ -116,6 +116,22 @@ public class NoteController {
     public String view(@PathVariable("id") int id, Model model) {
         Note note = noteService.findNoteById(id);
 
+        // 如果笔记是隐藏的
+        if (note.getType() == 1) {
+            String username = (String) SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            User user = userService.findUserByUsername(username);
+            // 当前登录的用户 ID
+            int userId = user.getId();
+            // 笔记中记录的创建者的 ID
+            int noteUserId = note.getUserId();
+            // 只有两者相等才能编辑笔记
+            if (userId != noteUserId) {
+                return "redirect:/note/index";
+            }
+        }
+
         model.addAttribute("note", note);
 
         return "note/view";
