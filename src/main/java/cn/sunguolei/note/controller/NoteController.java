@@ -122,13 +122,17 @@ public class NoteController {
                     .getAuthentication()
                     .getPrincipal();
             User user = userService.findUserByUsername(username);
-            // 当前登录的用户 ID
-            int userId = user.getId();
-            // 笔记中记录的创建者的 ID
-            int noteUserId = note.getUserId();
-            // 只有两者相等才能编辑笔记
-            if (userId != noteUserId) {
-                return "redirect:/note/index";
+            if (user == null) {
+                return "redirect:/toLogin";
+            } else {
+                // 当前登录的用户 ID
+                int userId = user.getId();
+                // 笔记中记录的创建者的 ID
+                int noteUserId = note.getUserId();
+                // 只有两者相等才能查看笔记
+                if (userId != noteUserId) {
+                    return "redirect:/note/index";
+                }
             }
         }
 
