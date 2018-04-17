@@ -211,7 +211,7 @@ public class UserController {
         System.out.println(cookies.length);
         // 删除 token
         deleteTokenFromCookies(response, cookies);
-        return "index";
+        return "redirect:/";
     }
 
     @RequestMapping("/personIndex")
