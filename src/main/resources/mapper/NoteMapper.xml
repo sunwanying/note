@@ -13,10 +13,29 @@
         <id property="userId" column="user_id"/>
         <id property="type" column="type"/>
     </resultMap>
+
+    <resultMap id="NoteWithUserMap" type="cn.sunguolei.note.domain.NoteWithUser">
+        <id property="id" column="id"/>
+        <id property="title" column="title"/>
+        <id property="createTime" column="create_time"/>
+        <id property="username" column="username"/>
+    </resultMap>
+
     <select id="index" resultMap="NoteMap" parameterType="int">
         SELECT *
         FROM t_note
         WHERE user_id = #{id}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="homeNoteList" resultMap="NoteWithUserMap">
+        SELECT
+            n.id,
+            n.title,
+            n.create_time,
+            u.username
+        FROM t_note AS n LEFT JOIN t_user AS u ON n.user_id = u.id
+        WHERE n.type = 0
         ORDER BY create_time DESC
     </select>
 

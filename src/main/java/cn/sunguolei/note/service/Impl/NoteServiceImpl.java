@@ -1,6 +1,7 @@
 package cn.sunguolei.note.service.Impl;
 
 import cn.sunguolei.note.domain.Note;
+import cn.sunguolei.note.domain.NoteWithUser;
 import cn.sunguolei.note.mapper.NoteMapper;
 import cn.sunguolei.note.service.NoteService;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<Note> index(int userId) {
         return noteMapper.index(userId);
+    }
+
+    @Override
+    public List<NoteWithUser> homeNoteList() {
+        return noteMapper.homeNoteList();
     }
 
     @Override

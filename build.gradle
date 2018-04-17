@@ -42,4 +42,6 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
+	// 前端支持 Java8 LocalDateTime
+	compile("org.thymeleaf.extras:thymeleaf-extras-java8time")
 }
