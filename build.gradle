@@ -44,4 +44,8 @@ dependencies {
 	testCompile('org.springframework.security:spring-security-test')
 	// 前端支持 Java8 LocalDateTime
 	compile("org.thymeleaf.extras:thymeleaf-extras-java8time")
+	// @Data 注解
+	compileOnly('org.projectlombok:lombok')
+    // MyBatis 分页插件
+    compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.2.7')
 }

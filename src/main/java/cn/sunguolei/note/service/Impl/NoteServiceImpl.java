@@ -4,6 +4,8 @@ import cn.sunguolei.note.domain.Note;
 import cn.sunguolei.note.domain.NoteWithUser;
 import cn.sunguolei.note.mapper.NoteMapper;
 import cn.sunguolei.note.service.NoteService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,10 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<NoteWithUser> homeNoteList() {
-        return noteMapper.homeNoteList();
+    public PageInfo<NoteWithUser> homeNoteList(int pageNum, int pageSize) {
+        PageInfo<NoteWithUser> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                .doSelectPageInfo(() -> noteMapper.homeNoteList());
+        return pageInfo;
     }
 
     @Override
