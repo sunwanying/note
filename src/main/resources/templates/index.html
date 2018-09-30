@@ -7,7 +7,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1 th:text="#{welcome}">预留给所有人笔记展示的地方以及猜你喜欢、广告推荐等</h1>
+    <h1 th:text="${adObject.content}">预留给所有人笔记展示的地方以及猜你喜欢、广告推荐等</h1>
 
     <table class="table table-striped table-bordered content">
         <thead>
@@ -28,7 +28,31 @@
         </tr>
         </tbody>
     </table>
+    <div class="text-center">
+        <a href="#" id="homePage">首页</a>
+        <span>|</span>
+        <a href="#" id="previousPage">上一页</a>
+        <span>|</span>
+        <a href="#" id="nextPage">下一页</a>
+        <span>|</span>
+        <a href="#" id="lastPage">尾页</a>
+        <span th:text="'当前页数：' + ${page.pageNum}"></span>
+        <span th:text="'  总页数：' + ${page.pages}"></span>
+        <span th:text="'   总数据：' + ${page.total}"></span>
+    </div>
 </div>
-
+<div layout:fragment="customScript">
+    <script th:inline="javascript">
+        var previousPage = [[${page.prePage}]];
+        var nextPage = [[${page.nextPage}]];
+        var lastPage = [[${page.pages}]];
+        var isFirstPage = [[${page.isFirstPage}]];
+        var isLastPage = [[${page.isLastPage}]];
+        var hasPreviousPage = [[${page.hasPreviousPage}]];
+        var hasNextPage = [[${page.hasNextPage}]];
+        var data = [[${data}]];
+    </script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</div>
 </body>
 </html>
